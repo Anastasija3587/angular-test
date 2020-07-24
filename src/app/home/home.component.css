@@ -1,0 +1,12 @@
+.wrapper {
+  text-align: center;
+}
+
+.navigation{
+  font-size: 25px;
+}
+
+.navigation:hover {
+  font-size: 30px;
+}
+

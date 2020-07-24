@@ -1,0 +1,23 @@
+.btn {
+  display: block;
+  margin: auto;
+}
+
+.wrap {
+  display: flex;
+  margin: 5% auto;
+}
+
+.item {
+  display: block;
+  width: 70%;
+  margin: auto;
+  padding: 2% 0;
+  cursor: pointer;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  text-align: center;
+}
+
+.item:hover {
+  transform: scale(1.1);
+}

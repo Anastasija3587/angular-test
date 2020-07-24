@@ -1,6 +1,20 @@
-<ul>
-  <li *ngFor="let news of newsService.news">
-    <p>{{news.title}}</p>
-    <img src="{{news.urlToImage}}" width="100" height="100">
-  </li>
-</ul>
+<div *ngIf="newsService.news.length; else noNews">
+  <div>
+    <input type="text" placeholder="filter news..." [(ngModel)]="filter" (keydown.enter)="filterNews($event)">
+  </div>
+  <mat-selection-list>
+    <mat-selection-list-item *ngFor="let news of newsService.news" id={{news.id}} [routerLink]=[news.id] class="item">
+      <p>{{news.title}}</p>
+      <img src="{{news.urlToImage}}" width="100" height="100">
+    </mat-selection-list-item>
+  </mat-selection-list>
+</div>
+<div class="wrap">
+  <button *ngIf="page > 1" mat-raised-button color="primary" class="btn" (click)="decrementPage()">&lArr;</button>
+  <button *ngIf="newsService.news.length;" mat-raised-button color="primary" class="btn"
+    (click)="incrementPage()">&rArr;</button>
+</div>
+<ng-template #noNews>
+  <p style="text-align: center;">No news now!</p>
+  <button routerLink="/"> Go Back </button>
+</ng-template>
