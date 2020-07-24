@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NewsService } from '../shared/news.services';
 import { generate } from 'shortid';
 import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-news',
@@ -11,32 +12,36 @@ import { tap } from 'rxjs/operators';
 export class NewsComponent implements OnInit {
   public page: number;
   public pageSize: number;
-  public filter = '';
+  public filter: string;
 
   constructor(public newsService: NewsService) {
     this.page = 1;
     this.pageSize = 10;
-    this.newsService
-      .getNews(this.page, this.pageSize)
-      .pipe(
-        tap(
-          news =>
-            (this.newsService.news = news.articles.map(el =>
-              Object.assign(
-                {},
-                {
-                  id: generate(),
-                  title: el.title,
-                  urlToImage: el.urlToImage,
-                  content: el.content,
-                },
-              ),
-            )),
-        ),
-      )
-      .subscribe(() =>
-        localStorage.setItem('news', JSON.stringify(this.newsService.news)),
-      );
+    this.filter = '';
+    if (!localStorage.getItem('news')) {
+      this.newsService
+        .getNews(this.page, this.pageSize)
+        .pipe(
+          tap(
+            news =>
+              (this.newsService.news = news.articles.map(el =>
+                Object.assign(
+                  {},
+                  {
+                    id: generate(),
+                    title: el.title,
+                    urlToImage: el.urlToImage,
+                    content: el.content,
+                  },
+                ),
+              )),
+          ),
+        )
+        .subscribe(() =>
+          localStorage.setItem('news', JSON.stringify(this.newsService.news)),
+        );
+    }
+    this.newsService.news = JSON.parse(localStorage.getItem('news'));
   }
 
   ngOnInit(): void {}
@@ -62,7 +67,9 @@ export class NewsComponent implements OnInit {
         ),
       )
       .subscribe(() =>
-        localStorage.setItem('news', JSON.stringify(this.newsService.news)),
+        this.newsService.news.length > 0
+          ? localStorage.setItem('news', JSON.stringify(this.newsService.news))
+          : localStorage.clear(),
       );
   }
 
@@ -91,11 +98,40 @@ export class NewsComponent implements OnInit {
       );
   }
 
-  filterNews(e): any {
-    console.log(e.target.value);
+  filterNews(e): void {
+    this.filter = e.target.value;
     this.newsService.news = this.newsService.news.filter(el =>
-      el.title.toLowerCase().includes(e.target.value.toLowerCase()),
+      el.title.toLowerCase().includes(this.filter.toLowerCase()),
     );
     e.target.value = '';
+    if (this.newsService.news.length === 0) {
+      return localStorage.clear();
+    }
+    localStorage.setItem('news', JSON.stringify(this.newsService.news));
+  }
+
+  withoutFilter(): void {
+    this.filter = '';
+    this.newsService
+      .getNews(this.page, this.pageSize)
+      .pipe(
+        tap(
+          news =>
+            (this.newsService.news = news.articles.map(el =>
+              Object.assign(
+                {},
+                {
+                  id: generate(),
+                  title: el.title,
+                  urlToImage: el.urlToImage,
+                  content: el.content,
+                },
+              ),
+            )),
+        ),
+      )
+      .subscribe(() =>
+        localStorage.setItem('news', JSON.stringify(this.newsService.news)),
+      );
   }
 }
