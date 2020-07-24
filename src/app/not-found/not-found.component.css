@@ -3,11 +3,12 @@ h2 {
   text-align: center;
 }
 
-.navigation {
+.btn {
   font-size: 25px;
-  text-align: center;
+  display: block;
+  margin: auto;
 }
 
-.navigation:hover {
-  font-size: 30px;
+.btn:hover {
+  background-color: #800080;
 }

@@ -1,9 +1,10 @@
 <mat-card class="card">
+  <button routerLink="/news" mat-raised-button color="primary" class="btn">&lArr;</button>
   <mat-card-title>
-    <p>{{oneNews.title}}</p>
+    <p class="title">{{oneNews.title}}</p>
   </mat-card-title>
-  <img mat-card-image src="{{oneNews.urlToImage}}" alt="photo">
+  <img class="img" mat-card-image src="{{oneNews.urlToImage}}" alt="photo">
   <mat-card-content>
-    <p>{{oneNews.content}}</p>
+    <p class="content">{{oneNews.content}}</p>
   </mat-card-content>
 </mat-card>

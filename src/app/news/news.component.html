@@ -1,6 +1,8 @@
-<div *ngIf="newsService.news.length; else noNews">
-  <div>
-    <input type="text" placeholder="filter news..." [(ngModel)]="filter" (keydown.enter)="filterNews($event)">
+<div *ngIf="newsService.news && newsService.news.length; else noNews">
+  <div class="wrapInput">
+    <input class="input" type="text" placeholder="filter news..." [(ngModel)]="filter"
+      (keydown.enter)="filterNews($event)">
+    <button type="button" (click)="withoutFilter()">&#10060;</button>
   </div>
   <mat-selection-list>
     <mat-selection-list-item *ngFor="let news of newsService.news" id={{news.id}} [routerLink]=[news.id] class="item">
@@ -10,11 +12,12 @@
   </mat-selection-list>
 </div>
 <div class="wrap">
-  <button *ngIf="page > 1" mat-raised-button color="primary" class="btn" (click)="decrementPage()">&lArr;</button>
-  <button *ngIf="newsService.news.length;" mat-raised-button color="primary" class="btn"
+  <button *ngIf="page > 1 && newsService.news.length;" mat-raised-button color="primary" class="btn"
+    (click)="decrementPage()">&lArr;</button>
+  <button *ngIf="newsService.news && newsService.news.length>9" mat-raised-button color="primary" class="btn"
     (click)="incrementPage()">&rArr;</button>
 </div>
 <ng-template #noNews>
   <p style="text-align: center;">No news now!</p>
-  <button routerLink="/"> Go Back </button>
+  <button mat-raised-button color="primary" routerLink="/" class="btn"> Go back! </button>
 </ng-template>
