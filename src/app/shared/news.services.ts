@@ -18,8 +18,6 @@ export class NewsService {
   constructor(private http: HttpClient) {}
 
   getNews(page, pageSize): Observable<any> {
-    return this.http.get(
-      `https://newsapi.org/v2/top-headlines?country=us&category=business&page=${page}&pageSize=${pageSize}&apiKey=8a1bb630f5084ccdbb160829f159a759`,
-    );
+    return this.http.post('/api/getnews', { page, pageSize });
   }
 }
