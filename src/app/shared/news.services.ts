@@ -19,7 +19,7 @@ export class NewsService {
 
   getNews(page, pageSize): Observable<any> {
     return this.http.get(
-      `http://newsapi.org/v2/top-headlines?country=us&category=business&page=${page}&pageSize=${pageSize}&apiKey=8a1bb630f5084ccdbb160829f159a759`,
+      `https://newsapi.org/v2/top-headlines?country=us&category=business&page=${page}&pageSize=${pageSize}&apiKey=8a1bb630f5084ccdbb160829f159a759`,
     );
   }
 }
