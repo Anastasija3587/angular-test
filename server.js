@@ -5,7 +5,12 @@ const app = express();
 
 function start() {
   app.use(express.static('./dist/my-app-angular'));
-  app.use(corsMiddleware());
+  app.use(
+    corsMiddleware({
+      origin: 'https://newsapi.org',
+      optionsSuccessStatus: 200,
+    }),
+  );
   app.get('/*', function(req, res) {
     res.sendFile('index.html', { root: 'dist/my-app-angular' });
   });
